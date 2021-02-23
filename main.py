@@ -14,7 +14,7 @@ def index():
     return render_template('index.html')
 
 
-@app.route("/get-boards")
+@app.route("/boards")
 @json_response
 def get_boards():
     """
@@ -23,7 +23,7 @@ def get_boards():
     return data_handler.get_boards()
 
 
-@app.route("/get-cards/<int:board_id>")
+@app.route("/cards/<int:board_id>")
 @json_response
 def get_cards_for_board(board_id: int):
     """
