@@ -23,10 +23,20 @@
 </head>
 <body>
 <!-- header -->
-<div>
-    <img class="layout-header" src="/static/logo/next_trello_logotyp.png"\>
 
-</div>
+    <div class="header" >
+        <div class="logotyp">
+            <a href="/"><img class="logotypHeader" src="/static/logo/next_trello_logotyp.png"\></a>
+
+            <form action="#">
+            {% if session %}
+                <button class="LoginButton" type="submit" name="logout" value="true"><img class="imgLoginButton" src="/static/icons/logout.png"/></button>
+            {% else %}
+                <button class="LoginButton" type="submit" name="login" value="true"><img class="imgLoginButton" src="/static/icons/login.png"/></button>
+            {% endif %}
+            </form>
+        </div>
+    </div>
 
 <!-- content -->
 
