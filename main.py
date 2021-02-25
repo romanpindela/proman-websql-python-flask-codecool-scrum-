@@ -14,6 +14,13 @@ def index():
     return render_template('index.html')
 
 
+@app.route("/login", methods=["GET"])
+def login():
+    """
+        This is login page
+    """
+    return render_template('login.html')
+
 @app.route("/boards")
 @json_response
 def get_boards():
