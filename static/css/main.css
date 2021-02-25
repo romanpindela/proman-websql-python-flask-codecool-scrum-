@@ -2,28 +2,31 @@
     background-color: green;
 }
 
+.page{
+    max-width: 1440px;
+    margin: 0 auto;
+}
 
 /*css for layout */
-.header {
-    width: auto;
+
+.logotypHeaderImg {
+    height: 90%;
+    display: inline;
+
 }
 
-.logotypHeader{
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-  width: 50%;
-}
-
-.imgLoginButton{
+.loginButton {
     width: 100px;
+    height: auto;
     border: none;
     background: none;
+    display: inline;
 }
 
-.LoginButton{
+
+.imgLoginButton {
     width: 100px;
-    border: none;
-    background: none;
+    height: auto;
+    display: inline;
 }
 
