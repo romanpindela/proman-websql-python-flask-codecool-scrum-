@@ -1,11 +1,21 @@
-const userEmail = "";
-const userPassword = "";
-const userPasswordConfirmed = "";
-const userHashedPassword = "";
+const userRegistrationEmail = "";
+const userRegistrationPassword = "";
+const userRegistrationPasswordConfirmed = "";
+const userRegistrationHashedPassword = "";
 const registeringProcessSuccess = "false";
 
-const timeToShowHint = "5";
-const hintMessage = "";
+export const minPasswordLenghtSigns = 6;
+export const timeToShowHint = "5";
+export const hintMessages = [];
+
+export const hintMessageType = [
+    "errorConfirmation": "Passwords don't match.",
+    "errorEmailTaken": "Email is already taken.",
+    "errorEmptyPassword": "Password can't be empty.",
+    "errorPasswordIsTooEasy": "Password's too easy. Min.  signs",
+    "serverProblem": "Something wrong on server site",
+    "connectionProblem": "Something wrong with establishing connection"
+]
 
 
 function initRegisterButton(){
@@ -14,7 +24,7 @@ function initRegisterButton(){
 }
 
 
-function registerProcess(){
+function registerProcessLinkedToButton(){
 
 }
 
@@ -28,15 +38,15 @@ function selfCheckPasswordIsConfirmedByUser(){
 }
 
 
-function hashPasswordBeforeSend(){
+export function hashPasswordBeforeSend(){
 
 }
 
-function prepareUserDataToSend(){
+export function prepareUserDataToSend(){
 
 }
 
-function sendUserRegistrationData(){
+export function sendUserRegistrationData(){
 
 }
 
@@ -44,3 +54,6 @@ function confirmRegistrationStatus(){
 
 }
 
+export function showHints(){
+
+}

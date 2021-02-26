@@ -1,3 +1,13 @@
+import {minPasswordLenghtSigns,
+    timeToShowHint,
+    hintMessages,
+    hintMessageType,
+    hashPasswordBeforeSend,
+    prepareUserDataToSend,
+    sendUserRegistrationData,
+    showHints
+} from "/static/js/register"
+
 const userEmail = "";
 const userPassword = "";
 const userHashedPassword = "";
@@ -12,7 +22,7 @@ function initLoginButton(){
 
 }
 
-function loginProcess(){
+function loginProcessLinkedToButton(){
 
 }
 
