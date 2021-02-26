@@ -110,5 +110,5 @@ fabric.properties
 # End of https://www.toptal.com/developers/gitignore/api/pycharm
 *.meta
 .idea/dataSources/9b2bedb7-0260-4116-a9c3-0630b139c3dc.xml
-__pycache__/data_manager.cpython-39.pyc
+__pycache__/
 /venv/
