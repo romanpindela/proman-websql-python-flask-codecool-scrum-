@@ -27,13 +27,17 @@ export let dataHandler = {
 
         // Here we use an arrow function to keep the value of 'this' on dataHandler.
         //    if we would use function(){...} here, the value of 'this' would change.
-        this._api_get('/get-boards', (response) => {
+        this._api_get('/boards', (response) => {
             this._data['boards'] = response;
             callback(response);
         });
     },
     getBoard: function (boardId, callback) {
-        // the board is retrieved and then the callback function is called with the board
+
+        this._api_get('/board/'+boardId, (response) => {
+            this._data['board'] = response;
+            callback(response);
+        });
     },
     getStatuses: function (callback) {
         // the statuses are retrieved and then the callback function is called with the statuses

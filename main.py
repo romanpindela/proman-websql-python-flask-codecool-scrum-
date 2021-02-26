@@ -1,4 +1,6 @@
 from flask import Flask, render_template, url_for
+
+import data_handler
 from util import json_response
 
 # import data_handler
@@ -29,6 +31,13 @@ def get_boards():
     """
     return data_handler.get_boards()
 
+@app.route("/board/<int:board_id>")
+@json_response
+def get_board(board_id: int):
+    """
+    All the boards
+    """
+    return data_handler.get_board(board_id)
 
 @app.route("/cards/<int:board_id>")
 @json_response
