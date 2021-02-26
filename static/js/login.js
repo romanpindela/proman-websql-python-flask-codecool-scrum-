@@ -1,4 +1,22 @@
+const userEmail = "";
+const userPassword = "";
+const userHashedPassword = "";
+const registeringProcessSuccess = "false";
+
+const timeToShowHint = "5";
+const hintMessage = "";
+
+
+
 function initLoginButton(){
+
+}
+
+function loginProcess(){
+
+}
+
+function getUserLoginInput(){
 
 }
 
