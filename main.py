@@ -3,10 +3,17 @@ from settings import server_state
 import data_handler
 from util import json_response
 
-# import data_handler
+
+import data_handler
+from os import urandom
+import bcrypt
+
+
+import register, login
+
 
 app = Flask(__name__)
-
+app.secret_key = urandom(16)
 
 """
             HOME PAGE /  
@@ -33,6 +40,13 @@ def login():
                            server_state = server_state,\
                            session=session)
 
+@app.route("/login", methods=["POST"])
+def login_post():
+    """
+        This is loging in...
+    """
+
+
 @app.route("/register", methods=["GET"])
 def register():
     """
@@ -42,6 +56,11 @@ def register():
                            server_state = server_state,\
                            session=session)
 
+@app.route("/register", methods=["POST"])
+def register_post():
+    """
+        This registering ...
+    """
 
 """
             BOARDS
