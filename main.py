@@ -1,5 +1,5 @@
-from flask import Flask, render_template, url_for
-
+from flask import Flask, render_template, url_for, redirect, request, session
+from settings import server_state
 import data_handler
 from util import json_response
 
@@ -16,7 +16,9 @@ def index():
     """
     This is a one-pager which shows all the boards and cards
     """
-    return render_template('index.html')
+    return render_template('index.html', \
+                           server_state = server_state,\
+                           session=session )
 
 
 """
@@ -27,14 +29,18 @@ def login():
     """
         This is login page
     """
-    return render_template('login.html')
+    return render_template('login.html', \
+                           server_state = server_state,\
+                           session=session)
 
 @app.route("/register", methods=["GET"])
 def register():
     """
         This is register page
     """
-    return render_template('register.html')
+    return render_template('register.html', \
+                           server_state = server_state,\
+                           session=session)
 
 
 """
