@@ -1,3 +1,30 @@
+.registerButtonImg_regular {
+  width: 50%;
+  background: none;
+  border:none;
+}
+
+.registerButtonImg_on_mouseover {
+  width: 60%;
+  background: none;
+  border:none;
+}
+
+
+.registerButton {
+  margin-top: 30px;
+  margin-bottom: 15px;
+  background: #f2ffff;
+  border: none;
+}
+
+.welcomeTextLogin{
+  width: 50%;
+  margin-top: 20px;
+  margin-bottom: 15px;
+}
+
+
 
 /* BASIC */
 
@@ -11,7 +38,7 @@ body {
 }
 
 a {
-  color: #92badd;
+  color: #98f4f4;
   display:inline-block;
   text-decoration: none;
   font-weight: 400;
@@ -138,11 +165,12 @@ input[type=text] {
 
 input[type=text]:focus {
   background-color: #fff;
-  border-bottom: 2px solid #5fbae9;
+  border: 3px solid #88dddd;
 }
 
-input[type=text]:placeholder {
-  color: #cccccc;
+::placeholder {
+  color: #88dddd;
+  font-weight: bold;
 }
 
 

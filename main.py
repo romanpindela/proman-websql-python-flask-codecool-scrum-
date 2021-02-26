@@ -8,6 +8,9 @@ from util import json_response
 app = Flask(__name__)
 
 
+"""
+            HOME PAGE /  
+"""
 @app.route("/")
 def index():
     """
@@ -16,6 +19,9 @@ def index():
     return render_template('index.html')
 
 
+"""
+            LOGIN AND REGISTRATION  
+"""
 @app.route("/login", methods=["GET"])
 def login():
     """
@@ -23,6 +29,17 @@ def login():
     """
     return render_template('login.html')
 
+@app.route("/register", methods=["GET"])
+def register():
+    """
+        This is register page
+    """
+    return render_template('register.html')
+
+
+"""
+            BOARDS
+"""
 @app.route("/boards")
 @json_response
 def get_boards():

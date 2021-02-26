@@ -1,0 +1,28 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<div class="wrapper fadeInDown">
+  <div id="formContent">
+
+    <!-- Login Form -->
+    <form>
+        <img class="welcomeTextLogin" src="/static/images/register_text.png"/>
+      <input type="text" id="login" class="fadeIn second" name="login" placeholder="your email">
+      <input type="text" id="password1" class="fadeIn third" name="login" placeholder="your password">
+        <input type="text" id="password2" class="fadeIn fourth" name="login" placeholder="repeat password">
+      <input type="submit" class="fadeIn fourth" value="Register">
+    </form>
+
+    <div>
+        <form action={{ url_for("login") }}>
+            <button class="registerButton">
+                <img id="registerButtonImg" class="registerButtonImg_regular" src="/static/images/login_question.png"/>
+            </button>
+        </form>
+    </div>
+
+  </div>
+</div>
+
+{% endblock %}
