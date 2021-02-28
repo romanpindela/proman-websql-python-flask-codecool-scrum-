@@ -8,17 +8,21 @@ export const minPasswordLenghtSigns = 6;
 export const timeToShowHint = "5";
 export const hintMessages = [];
 
-export const hintMessageType = [
+export const hintMessageType = {
     "errorConfirmation": "Passwords don't match.",
     "errorEmailTaken": "Email is already taken.",
     "errorEmptyPassword": "Password can't be empty.",
     "errorPasswordIsTooEasy": "Password's too easy. Min.  signs",
     "serverProblem": "Something wrong on server site",
     "connectionProblem": "Something wrong with establishing connection"
-]
+}
 
+var registerButton = document.getElementsByClassName("registerButton")[0];
+initRegisterButton();
 
 function initRegisterButton(){
+    registerButton.addEventListener("click", console.log(registerButton));
+
 
 
 }
