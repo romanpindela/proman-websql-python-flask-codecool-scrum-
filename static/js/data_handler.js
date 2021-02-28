@@ -19,6 +19,40 @@ export let dataHandler = {
     _api_post: function (url, data, callback) {
         // it is not called from outside
         // sends the data to the API, and calls callback function
+        //complete example:
+        // Default options are marked with *
+        // const response = await fetch(url, {
+        //   method: 'POST', // *GET, POST, PUT, DELETE, etc.
+        //   mode: 'cors', // no-cors, *cors, same-origin
+        //   cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+        //   credentials: 'same-origin', // include, *same-origin, omit
+        //   headers: {
+        //     'Content-Type': 'application/json'
+        //     // 'Content-Type': 'application/x-www-form-urlencoded',
+        //   },
+        //   redirect: 'follow', // manual, *follow, error
+        //   referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+        //   body: JSON.stringify(data) // body data type must match "Content-Type" header
+        // });
+        // return response.json(); // parses JSON response into native JavaScript objects
+
+        console.log(url)
+        console.log(data)
+
+        fetch(url, {
+            method: 'POST',
+            credentials: 'same-origin',
+            body: JSON.stringify(data),
+            headers: {
+                'Content-Type': 'application/json'
+                // 'Content-Type': 'application/x-www-form-urlencoded',
+            },
+        })
+        .then(
+            response => response.json()
+        ).then(
+            json_response => callback(json_response)
+        )
     },
     init: function () {
     },
@@ -51,8 +85,16 @@ export let dataHandler = {
     getCard: function (cardId, callback) {
         // the card is retrieved and then the callback function is called with the card
     },
-    createNewBoard: function (boardTitle, callback) {
+    createNewBoard: function (boardTitle, is_private, callback) {
         // creates new board, saves it and calls the callback function with its data
+        let data = {
+            title: boardTitle,
+            private: is_private
+        }
+
+        console.log(data)
+
+        this._api_post("/board/create", data, callback)
     },
     createNewCard: function (cardTitle, boardId, statusId, callback) {
         // creates new card, saves it and calls the callback function with its data

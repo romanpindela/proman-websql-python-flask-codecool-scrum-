@@ -31,6 +31,9 @@ def get_boards():
 def get_board(board_id):
     return persistence_postgres.get_board(board_id, force=True)[0]
 
+def create_board(board):
+    return persistence_postgres.create_board(board)
+
 def get_cards_for_board(board_id):
     persistence_postgres.clear_cache()
     all_cards = persistence_postgres.get_cards()

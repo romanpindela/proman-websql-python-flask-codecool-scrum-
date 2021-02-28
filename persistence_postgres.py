@@ -33,3 +33,17 @@ def get_board(cursor: RealDictCursor, board_id, force=False):
     param = {'board_id': board_id}
     cursor.execute(query, param)
     return cursor.fetchall()
+
+@connection_handler
+def create_board(cursor: RealDictCursor, board):
+    command = """
+        INSERT INTO boards (id, title, private , user_id)
+        VALUES ((select max(id) from boards)+1,  %(title)s, %(private)s, %(user_id)s);
+        """
+    param = {
+        'title': board['title'],
+        'private': board['private'],
+        'user_id': board['user_id']
+    }
+    cursor.execute(command, param)
+    return 0

@@ -3,9 +3,23 @@ import { dataHandler } from "./data_handler.js";
 import { dom } from "./dom.js";
 import { domBoard } from "./dom_board.js";
 
+let templates;
+
 export let domBoards = {
     init: function () {
         // This function should run once, when the page is loaded.
+        let templates = document.getElementById("templates")
+        let templates_boards = document.createElement("div")
+        templates_boards.id = "templates_boards"
+
+        fetch("static/html_templates/boards_templates.html")
+            .then(function(response){
+                return response.text()
+            })
+            .then(function(html){
+            templates_boards.innerHTML = html
+        })
+        templates.appendChild(templates_boards)
     },
     loadBoards: function () {
         // retrieves boards and makes showBoards called
@@ -34,7 +48,7 @@ export let domBoards = {
         let newBoardButton = document.createElement('button');
         newBoardButton.className = 'btn btn-info btn-lg'
         newBoardButton.setAttribute('data-toggle', 'modal');
-        newBoardButton.setAttribute('data-target', '#myModal');
+        newBoardButton.setAttribute('data-target', '#createBoardModal');
 
         //newBoardButton.addEventListener('click', ()=>{
         //    //TODO: Show modal window "Create new board"
@@ -42,76 +56,18 @@ export let domBoards = {
         //newBoardButton.className = "btn btn-primary"
         newBoardButton.innerText = "Create new board"
 
-        let divMyModal = document.createElement('div')
-        divMyModal.setAttribute('id', 'myModal');
-        divMyModal.setAttribute('role', 'dialog');
-        divMyModal.className="modal fade"
+        let modalTemplate = document.getElementById("createBoard");
+        let modal = modalTemplate.content.cloneNode(true)
+        boardsContainer.appendChild(modal);
 
-        boardsContainer.insertAdjacentElement('beforeend', divMyModal)
-
-        let divModalDialog = document.createElement('div');
-        divModalDialog.className = "modal-dialog";
-
-        divMyModal.insertAdjacentElement('beforeend', divModalDialog);
-
-        let divModalContent = document.createElement('div')
-        divModalContent.className = "modal-content"
-        divModalDialog.insertAdjacentElement('beforeend', divModalContent)
-
-        let divModalHeader = document.createElement('div')
-        divModalHeader.className = "modal-header"
-
-        let buttonClose = document.createElement('button')
-        buttonClose.className = "close"
-        buttonClose.setAttribute('data-dismiss', 'modal')
-        buttonClose.innerText='&times;'
-        divModalHeader.insertAdjacentElement('beforeend', buttonClose);
-
-        let modalTitle = document.createElement('h4')
-        modalTitle.className="modal-title"
-        modalTitle.innerText = "Modal header"
-        divModalHeader.insertAdjacentElement('beforeend', modalTitle)
-
-        divModalContent.insertAdjacentElement('beforeend', divModalHeader)
-
-        let modalBody = document.createElement('div')
-        modalBody.className = "modal-body"
-        modalBody.innerText = "Some body"
-
-        divModalContent.insertAdjacentElement('beforeend', modalBody)
-
-        let modalFooter = document.createElement('div')
-        modalFooter.className = "modal-footer"
-
-        buttonClose = document.createElement('button')
-        buttonClose.className = "btn btn-default"
-        buttonClose.setAttribute('data-dismiss', 'modal')
-        buttonClose.innerText='Close'
-        modalFooter.insertAdjacentElement('beforeend', buttonClose);
-
-         divModalContent.insertAdjacentElement('beforeend', modalFooter)
-        /*
-        <!-- Modal --
-  <div class="modal fade" id="myModal" role="dialog">
-    <div class="modal-dialog">
-
-      <!-- Modal content-->
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title">Modal Header</h4>
-        </div>
-        <div class="modal-body">
-          <p>Some text in the modal.</p>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        </div>
-      </div>
-
-    </div>
-  </div>
-         */
+        let createBoardModalButton = document.getElementById("createBoardBtn")
+        createBoardModalButton.addEventListener('click', (event) =>{
+            let title = document.getElementById("board_title").value
+            let isPrivate = document.getElementById("board_private").checked
+            dataHandler.createNewBoard(title, isPrivate, (response)=> {
+                console.log(response)
+            })
+        });
 
         boardsContainer.insertAdjacentElement('beforeend', newBoardButton)
         boardsContainer.insertAdjacentElement("beforeend", boardList);

@@ -81,6 +81,17 @@ def get_board(board_id: int):
     """
     return data_handler.get_board(board_id)
 
+@app.route("/board/create",  methods=['GET', 'POST'])
+@json_response
+def create_board():
+    content = request.json
+
+    # TODO: Get user name from session
+    content["user_id"] = "test"
+    data_handler.create_board(content)
+
+    return ""
+
 @app.route("/cards/<int:board_id>")
 @json_response
 def get_cards_for_board(board_id: int):
