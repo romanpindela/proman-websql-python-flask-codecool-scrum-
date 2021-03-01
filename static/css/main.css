@@ -41,3 +41,13 @@
     font-weight: bold;
     background: #98f4f4;
 }
+
+.hintMessagesWrong{
+    color: #fc9191;
+    font-weight: bold;
+}
+
+.hintMessagesCorrect{
+    color: #4AD295;
+    font-weight: bold;
+}
