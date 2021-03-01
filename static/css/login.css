@@ -1,4 +1,4 @@
-.registerButtonImg_regular {
+.registerButtonImg_regular, .loginButtonImg_regular {
   width: 50%;
   background: none;
   border:none;
@@ -11,7 +11,7 @@
 }
 
 
-.registerButton {
+.registerButton, .loginButton {
   margin-top: 30px;
   margin-bottom: 15px;
   background: #f2ffff;

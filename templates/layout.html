@@ -37,9 +37,9 @@
         <a href="/"><img class="logotypHeaderImg" class="" src="/static/logo/next_trello_logotyp.png"\></a>
         <form style="display: inline" action="{{ url_for("login") }}" method="GET" >
         {% if session %}
-            <button class="loginButton" type="submit" name="logout" value="true"><img class="imgLoginButton" src="/static/icons/logout.png"/></button>
+            <button class="loginButtonMain" type="submit" name="logout" value="true"><img class="imgLoginButton" src="/static/icons/logout.png"/></button>
         {% else %}
-            <button class="loginButton" type="submit" name="login" value="true"><img class="imgLoginButton" src="/static/icons/login.png"/></button>
+            <button class="loginButtonMain" type="submit" name="login" value="true"><img class="imgLoginButton" src="/static/icons/login.png"/></button>
         {% endif %}
         </form>
     </div>
