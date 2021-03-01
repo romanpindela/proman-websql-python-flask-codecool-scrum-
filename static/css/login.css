@@ -37,7 +37,7 @@ body {
   height: 60vh;
 }
 
-a {
+.aForgetPasswordLink {
   color: #98f4f4;
   display:inline-block;
   text-decoration: none;
