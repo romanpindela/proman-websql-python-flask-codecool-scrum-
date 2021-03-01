@@ -1,11 +1,13 @@
-import { dom } from "./dom.js";
+//**** import { dom } from "./dom.js";
+import { initRegisterButton } from "./register.js";
 
 // This function is to initialize the application
 function init() {
     // init data
-    dom.init();
+    //**** dom.init();
     // loads the boards to the screen
-    dom.loadBoards();
+    //**** dom.loadBoards();
+    initRegisterButton();
 
 }
 
