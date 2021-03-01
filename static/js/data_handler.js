@@ -48,9 +48,12 @@ export let dataHandler = {
                 // 'Content-Type': 'application/x-www-form-urlencoded',
             },
         })
-        .then(
-            response => response.json()
-        ).then(
+        .then(function (response)
+        {
+            if (!response.ok)
+                throw new Error('Network response was not ok');
+            return response.json()
+        }).then(
             json_response => callback(json_response)
         )
     },
@@ -95,6 +98,12 @@ export let dataHandler = {
         console.log(data)
 
         this._api_post("/board/create", data, callback)
+    },
+    deleteBoard: function(board_id, callback){
+        let data = {
+            board_id: board_id
+        }
+      this._api_post("/board/delete", data, callback)
     },
     createNewCard: function (cardTitle, boardId, statusId, callback) {
         // creates new card, saves it and calls the callback function with its data

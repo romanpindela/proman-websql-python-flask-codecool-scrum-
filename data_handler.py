@@ -34,6 +34,9 @@ def get_board(board_id):
 def create_board(board):
     return persistence_postgres.create_board(board)
 
+def delete_board(parameters):
+    return persistence_postgres.delete_board(parameters)
+
 def get_cards_for_board(board_id):
     persistence_postgres.clear_cache()
     all_cards = persistence_postgres.get_cards()

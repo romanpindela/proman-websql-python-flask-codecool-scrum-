@@ -17,6 +17,22 @@ export let dom = {
         while (boards.hasChildNodes())
             boards.removeChild(boards.lastChild)
     },
+    loadTemplates: function (divId, url){
+        let templates = document.getElementById("templates")
+        let templates_div = document.createElement("div")
+        templates_div.id = divId
+
+        url = "static/html_templates/" + url
+
+        fetch(url)
+            .then(function (response) {
+                return response.text()
+            })
+            .then(function (html) {
+                templates_div.innerHTML = html
+            })
+        templates.appendChild(templates_div)
+    },
     loadCards: function (boardId) {
         // retrieves cards and makes showCards called
     },

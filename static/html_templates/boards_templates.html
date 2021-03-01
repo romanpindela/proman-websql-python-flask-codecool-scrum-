@@ -33,11 +33,12 @@
 <template id="tableBoards">
     <h1>Boards</h1>
     <table id="boards">
+        <tr><th>Title</th><th>Is private</th><th></th><th></th></tr>
     </table>
 </template>
 <template id="tableBoardsRow">
     <tr>
-        <td><label name="title" id="title"/></td>
+        <td><label class="btn btn-link" name="title" id="title"/></td>
         <td><label name="private" id="private"/></td>
         <td><span class="fa fa-pencil-square-o" name="edit" id="edit">edit</span></td>
         <td><span class="fa fa-times" name="delete" id="delete">delete</span></td>

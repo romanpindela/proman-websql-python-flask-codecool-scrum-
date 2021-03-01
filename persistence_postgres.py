@@ -47,3 +47,15 @@ def create_board(cursor: RealDictCursor, board):
     }
     cursor.execute(command, param)
     return 0
+
+@connection_handler
+def delete_board(cursor: RealDictCursor, parameters):
+    command = """
+        DELETE FROM boards
+        where id = %(board_id)s and (private = false or (private = true and user_id = %(user_id)s))
+    """
+    param = {
+        'board_id': parameters['board_id'],
+        'user_id': parameters['user_id']
+    }
+    cursor.execute(command, param)
