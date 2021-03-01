@@ -17,16 +17,17 @@ export const hintMessageType = {
     "connectionProblem": "Something wrong with establishing connection"
 }
 
-var registerButton = document.getElementById("registerButtonSubmit")
+export let registerButton = document.getElementById("registerButtonSubmit");
+registerButton.hi
 
-
-export function initRegisterButton(){
-    registerButton.addEventListener("click", console.log(registerButton));
-    console.log(registerButton);
+export function initRegisterButton(registerButton){
+    registerButton.addEventListener("click", registerProcessLinkedToButton);
 }
 
 
-function registerProcessLinkedToButton(){
+
+function registerProcessLinkedToButton(e){
+    console.log(e);
 
 }
 

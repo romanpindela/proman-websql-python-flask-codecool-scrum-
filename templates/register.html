@@ -11,11 +11,11 @@
       <input type="text" id="login" class="fadeIn second" name="login" placeholder="your email">
       <input type="password" id="password1" class="fadeIn third" name="login" placeholder="your password">
         <input type="password" id="password2" class="fadeIn fourth" name="login" placeholder="repeat password">
-      <input id="registerButtonSubmit" type="submit" class="fadeIn fourth" value="Register">
+      <input id="registerButtonSubmit" type="button" class="fadeIn fourth" value="Register">
     </form>
 
     <div>
-        <form>
+        <form action={{ url_for("login") }}>
             <button class="registerButton">
                 <img id="registerButtonImg" class="registerButtonImg_regular" src="/static/images/login_question.png"/>
             </button>

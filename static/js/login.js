@@ -17,6 +17,9 @@ const timeToShowHint = "5";
 const hintMessage = "";
 
 
+var registerButton = document.getElementById("loginButtonSubmit");
+
+
 
 function initLoginButton(){
 
