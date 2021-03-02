@@ -49,3 +49,15 @@ def get_cards_for_board(board_id):
             card['status_id'] = get_card_status(card['status_id'])  # Set textual status for the card
             matching_cards.append(card)
     return matching_cards
+
+def check_if_login_doesnt_exist(loginame):
+    count_login =  persistence_postgres.check_login_exist(loginame)
+    return True if count_login['count'] == 0 else False
+
+def register_new_user(loginname, password):
+    if check_if_login_doesnt_exist(loginname):
+        persistence_postgres.register_new_user(loginname, password)
+        return True;
+    else:
+        return False;
+

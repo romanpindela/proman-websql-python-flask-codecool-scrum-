@@ -2,7 +2,7 @@ let userRegistrationEmail = "";
 let userRegistrationPassword = "";
 let userRegistrationPasswordConfirmed = "";
 let userRegistrationHashedPassword = "";
-let registeringProcessSuccess = "false";
+let registrationSuccessStatus = "false";
 
 export const minPasswordLength = 6;
 export const timeToShowHint = "5";
@@ -16,9 +16,9 @@ export const hintMessageType = {
     "errorNotValidEmail": "Email is wrong. Enter Valid email.",
     "errorEmptyPassword": "Password can't be empty.",
     "errorMinPasswordLength": `Password's min. lenght is ${minPasswordLength}` ,
-    "serverProblem": "Something wrong on server site",
-    "connectionProblem": "Something wrong with establishing connection",
-    "registrationDataCorrect": "Your registration data is correct."
+    "registrationSuccessful": "Success! Your account is registered.",
+    "registrationFailed": "Login already exist. Try again.",
+    "registrationDataCorrect": "Your registration data is correct.",
 }
 
 export let registerButton = document.getElementById("registerButtonSubmit");
@@ -60,9 +60,11 @@ function checkUserRegistrationData(){
 }
 
 function sendRegistrationDataToServer(){
-    prepareUserDataToSend();
-    sendUserRegistrationData();
-    confirmRegistrationStatus();
+    if (userRegistrationDataCorrect === true){
+        sendUserRegistrationData();
+    }else{
+
+    }
 }
 
 
@@ -90,6 +92,28 @@ function showUserHintMessages(){
         newHintDiv.innerText = hint;
         hintMessagesDiv.appendChild(newHintDiv);
     });
+}
+
+function showServerRegistrationStatus(){
+    hintMessages = [];
+    if (registrationSuccessStatus === false){
+        hintMessages.push(hintMessageType['registrationFailed'])
+    }else{
+        hintMessages.push(hintMessageType["registrationSuccessful"])
+    }
+
+
+    let hintMessagesDiv = document.getElementById("hintMessages");
+    hintMessagesDiv.innerHTML = "";
+
+    let cssClassStatus = "hintMessagesWrong";
+        if (registrationSuccessStatus === true){
+        cssClassStatus = "hintMessagesCorrect";
+    }
+    let newHintDiv = document.createElement("div");
+        newHintDiv.classList.add(cssClassStatus);
+        newHintDiv.innerText = hintMessages[0];
+        hintMessagesDiv.appendChild(newHintDiv);
 }
 
 
@@ -136,10 +160,25 @@ export function prepareUserDataToSend(){
 
 }
 
+let urlRegister = "/register"
 export function sendUserRegistrationData(){
-
-}
-
-function confirmRegistrationStatus(){
-
+    fetch(urlRegister,{
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+                },
+            body: JSON.stringify({"login": userRegistrationEmail, "password": userRegistrationPassword })
+            }
+        )
+        .then(response => response.json())
+        .then(function (response){
+            if (response['registration_success_status'] === "login exist"){
+                registrationSuccessStatus = false;
+            }else{
+                registrationSuccessStatus = true;
+            }
+            showServerRegistrationStatus();
+            console.log(response)
+        })
 }

@@ -1,4 +1,5 @@
-from flask import Flask, render_template, url_for, redirect, request, session
+from flask import Flask, render_template, url_for, redirect, request, session, \
+    jsonify, json
 from settings import server_state
 import data_handler
 from util import json_response
@@ -57,10 +58,21 @@ def register():
                            session=session)
 
 @app.route("/register", methods=["POST"])
+@json_response
 def register_post():
-    """
-        This registering ...
-    """
+
+    if request.is_json:
+        registration_data = request.get_json()
+        registration_success_status = data_handler.register_new_user(
+            registration_data['login'],
+            registration_data['password']
+            )
+        if registration_success_status:
+            return {'registration_success_status': "success",
+                     registration_data['login']: registration_data['password']}
+        else:
+            return {'registration_success_status': "login exist"}
+
 
 """
             BOARDS
@@ -121,6 +133,7 @@ def get_cards_for_board(board_id: int):
     :param board_id: id of the parent board
     """
     return data_handler.get_cards_for_board(board_id)
+
 
 
 def main():

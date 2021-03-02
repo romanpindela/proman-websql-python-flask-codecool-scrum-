@@ -73,3 +73,29 @@ def edit_board(cursor: RealDictCursor, parameters):
         'board_title': parameters['title']
     }
     cursor.execute(command, param)
+
+@connection_handler
+def check_login_exist(cursor: RealDictCursor, loginame):
+    command = """
+        SELECT count(*)
+        FROM users
+        WHERE login = %(login)s
+    """
+    param = {
+        "login": loginame
+    }
+    cursor.execute(command, param)
+    return cursor.fetchone()
+
+@connection_handler
+def register_new_user(cursor: RealDictCursor, loginname, password):
+    command = """
+        INSERT INTO users(login, password)
+        VALUES (%(loginname)s, %(password)s)
+        RETURNING *
+    """
+    param = {
+        "loginname": loginname,
+        "password": password
+        }
+    cursor.execute(command, param)
