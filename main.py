@@ -14,8 +14,8 @@ import register, login
 
 
 app = Flask(__name__)
-app.secret_key = urandom(16)
-gensalt_size = 16
+app.secret_key = urandom(5)
+gensalt_size = 10
 
 """
             HOME PAGE /  
