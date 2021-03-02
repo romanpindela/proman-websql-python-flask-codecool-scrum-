@@ -15,6 +15,7 @@ import register, login
 
 app = Flask(__name__)
 app.secret_key = urandom(16)
+gensalt_size = 16
 
 """
             HOME PAGE /  
@@ -63,13 +64,17 @@ def register_post():
 
     if request.is_json:
         registration_data = request.get_json()
-        registration_success_status = data_handler.register_new_user(
-            registration_data['login'],
-            registration_data['password']
-            )
+        login = registration_data['login']
+        password = registration_data['password']
+        hashpassword  = bcrypt.hashpw(password.encode('utf-8'), \
+                                     bcrypt.gensalt(gensalt_size))
+
+        registration_success_status = data_handler.register_new_user(login, hashpassword )
+
         if registration_success_status:
-            return {'registration_success_status': "success",
-                     registration_data['login']: registration_data['password']}
+            return {'registration_success_status': "success", \
+                     registration_data['login']: registration_data['password'], \
+                    login: f"{hashpassword}"}
         else:
             return {'registration_success_status': "login exist"}
 

@@ -40,7 +40,7 @@ function registerProcessLinkedToButton(e){
     //console.log(e);
     getUserRegisterInput();
     checkUserRegistrationData();
-    setTimeout(sendRegistrationDataToServer, 1000);
+    sendRegistrationDataToServer();
 }
 
 function getUserRegisterInput(){
@@ -66,6 +66,8 @@ function checkUserRegistrationData(){
 
 function sendRegistrationDataToServer(){
     if (userRegistrationDataCorrect === true){
+
+        registerButton.hidden = true
         sendUserRegistrationData();
     }else{
 
@@ -181,6 +183,7 @@ export function sendUserRegistrationData(){
                 registrationSuccessStatus = true;
             }
             showServerRegistrationStatus();
+            registerButton.hidden = false;
             console.log(response)
         })
 }
