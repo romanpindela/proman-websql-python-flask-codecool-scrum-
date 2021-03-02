@@ -35,6 +35,7 @@ function registerProcessLinkedToButton(e){
     //console.log(e);
     getUserRegisterInput();
     checkUserRegistrationData();
+    sendRegistrationDataToServer()
 }
 
 function getUserRegisterInput(){
@@ -59,7 +60,6 @@ function checkUserRegistrationData(){
 }
 
 function sendRegistrationDataToServer(){
-    hashPasswordBeforeSend();
     prepareUserDataToSend();
     sendUserRegistrationData();
     confirmRegistrationStatus();
@@ -123,8 +123,14 @@ function checkNotEmptyEmail(){
 
 
 export function hashPasswordBeforeSend(){
-
-}
+    const saltRounds = 10;
+    bcrypt.genSalt(saltRounds, function(err, salt) {
+        bcrypt.hash(userRegistrationPassword, salt, function (err, hash) {
+            userRegistrationHashedPassword = hash;
+            console.log(hash);
+        });
+    });
+};
 
 export function prepareUserDataToSend(){
 
