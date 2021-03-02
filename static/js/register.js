@@ -40,7 +40,7 @@ function registerProcessLinkedToButton(e){
     //console.log(e);
     getUserRegisterInput();
     checkUserRegistrationData();
-    sendRegistrationDataToServer()
+    setTimeout(sendRegistrationDataToServer, 1000);
 }
 
 function getUserRegisterInput(){
