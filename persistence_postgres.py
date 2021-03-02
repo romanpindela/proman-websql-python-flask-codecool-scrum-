@@ -38,7 +38,7 @@ def get_board(cursor: RealDictCursor, board_id, force=False):
 def create_board(cursor: RealDictCursor, board):
     command = """
         INSERT INTO boards (id, title, private , user_id)
-        VALUES ((select max(id) from boards)+1,  %(title)s, %(private)s, %(user_id)s);
+        VALUES (NULLIF((select max(id) from boards),0)+1,  %(title)s, %(private)s, %(user_id)s);
         """
     param = {
         'title': board['title'],

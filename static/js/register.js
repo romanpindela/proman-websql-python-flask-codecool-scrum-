@@ -4,7 +4,7 @@ let userRegistrationPasswordConfirmed = "";
 let userRegistrationHashedPassword = "";
 let registrationSuccessStatus = "false";
 
-export const minPasswordLength = 6;
+export const minPasswordLength = 4;
 export const timeToShowHint = "5";
 export let hintMessages = [];
 let userRegistrationDataCorrect = true;
@@ -21,8 +21,13 @@ export const hintMessageType = {
     "registrationDataCorrect": "Your registration data is correct.",
 }
 
-export let registerButton = document.getElementById("registerButtonSubmit");
+let registerButton = document.getElementById("registerButtonSubmit");
 
+initRegisterButton();
+
+function initRegisterPage(){
+    initRegisterButton();
+}
 
 ////////////////////////////////////////////
 /// main module function ///////////////////
@@ -118,9 +123,9 @@ function showServerRegistrationStatus(){
 
 
 function checkValidPasswordLength(){
-    if (userRegistrationPassword.length < 6){
+    if (userRegistrationPassword.length <= minPasswordLength){
       userRegistrationDataCorrect = false;
-    hintMessages.push(hintMessageType["errorMinPasswordLength"]);
+      hintMessages.push(hintMessageType["errorMinPasswordLength"]);
     }
 }
 
@@ -156,9 +161,6 @@ export function hashPasswordBeforeSend(){
     });
 };
 
-export function prepareUserDataToSend(){
-
-}
 
 let urlRegister = "/register"
 export function sendUserRegistrationData(){
