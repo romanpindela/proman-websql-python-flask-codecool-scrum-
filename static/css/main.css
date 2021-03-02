@@ -51,3 +51,10 @@
     color: #4AD295;
     font-weight: bold;
 }
+.btn.btn-primary.btn-lg.btn-block{
+    background-color: #17a2b8 !important;
+    border-color: #17a2b8 !important;
+}
+h1{
+    font-family: monospace;
+}

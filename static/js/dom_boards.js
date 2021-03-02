@@ -48,8 +48,23 @@ export let domBoards = {
             })
 
         })
-
         boardsContainer.appendChild(modal);
+
+        let modalEditTemplate = document.getElementById("editBoard");
+        let modalEdit = modalEditTemplate.content.cloneNode(true)
+
+        let editBoardModalButton = modalEdit.querySelector ("#editBoardBtn")
+        editBoardModalButton.addEventListener('click', (event) => {
+            let title = document.getElementById("boardTitle").value
+            let id = document.getElementById("boardId").value
+            dataHandler.editBoard(id, title, (response) => {
+                console.log(response)
+                $("#editBoardModal").modal('hide');
+                this.loadBoards()
+            })
+
+        })
+        boardsContainer.appendChild(modalEdit);
 
         let tableBoardRowTemplate = document.getElementById("tableBoardsRow");
         let tableBoardTemplate = document.getElementById("tableBoards");
@@ -66,16 +81,40 @@ export let domBoards = {
                 let id = event.target.getAttribute("titleId")
                 domBoard.getBoard(id)
             })
-            row.querySelector('#private').innerText = board.private;
+            let privateLabel= row.querySelector('#private')
+            if(board.private){
+                privateLabel.innerText = "Private";
+                privateLabel.className = "privatePublic";
+            }
+            else{
+                privateLabel.innerText = "Public";
+                privateLabel.className = "privatePublic";
+            }
+            // row.querySelector('#private').innerText = board.private;
             let deleteBtn = row.querySelector("#delete")
-            deleteBtn.setAttribute('titleId', board.id)
+            deleteBtn.setAttribute('boardId', board.id)
             deleteBtn.addEventListener('click', (event)=>{
-                let id = event.target.getAttribute("titleId")
+                let id = event.target.getAttribute("boardId")
                 dataHandler.deleteBoard(id, ()=>
                 {
                      $("#createBoardModal").modal('hide');
                     this.loadBoards()
                 })
+            })
+
+            let editBtn = row.querySelector("#edit")
+            editBtn.setAttribute("boardId", board.id)
+            editBtn.setAttribute("boardTitle", board.title)
+            editBtn.addEventListener('click', (event)=>{
+                let id = event.target.getAttribute("boardId")
+                let title = event.target.getAttribute("boardTitle")
+                let editModal = document.querySelector("#editBoardModal")
+                editModal.querySelector("#boardId").value = id
+                editModal.querySelector("#boardTitle").value = title
+
+                //$("#createBoardModal").modal('hide');
+                $('#editBoardModal').modal()
+                $('#editBoardModal').modal('show');
             })
 
             table.appendChild(row);

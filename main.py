@@ -103,6 +103,16 @@ def delete_board():
 
     return ""
 
+@app.route("/board/edit",  methods=['POST'])
+@json_response
+def edit_board():
+    content = request.json
+
+    # TODO: Get user name from session
+    content["user_id"] = "test"
+    data_handler.edit_board(content)
+
+    return ""
 @app.route("/cards/<int:board_id>")
 @json_response
 def get_cards_for_board(board_id: int):

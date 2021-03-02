@@ -59,3 +59,17 @@ def delete_board(cursor: RealDictCursor, parameters):
         'user_id': parameters['user_id']
     }
     cursor.execute(command, param)
+
+@connection_handler
+def edit_board(cursor: RealDictCursor, parameters):
+    command = """
+        UPDATE boards
+        SET title = %(board_title)s
+        where id = %(board_id)s and (private = false or (private = true and user_id = %(user_id)s))
+    """
+    param = {
+        'board_id': parameters['id'],
+        'user_id': parameters['user_id'],
+        'board_title': parameters['title']
+    }
+    cursor.execute(command, param)
