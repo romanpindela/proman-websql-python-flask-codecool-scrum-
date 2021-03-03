@@ -5,9 +5,10 @@ let userRegistrationHashedPassword = "";
 let registrationSuccessStatus = "false";
 
 export const minPasswordLength = 4;
-export const timeToShowHint = "5";
-export let hintMessages = [];
+let hintMessages = [];
 let userRegistrationDataCorrect = true;
+
+let urlRegister = "/register";
 
 export const hintMessageType = {
     "errorConfirmation": "Passwords don't match.",
@@ -19,19 +20,24 @@ export const hintMessageType = {
     "registrationSuccessful": "Success! Your account is registered.",
     "registrationFailed": "Login already exist. Try again.",
     "registrationDataCorrect": "Your registration data is correct.",
+    "loginDataCorrect": "Your login data is correct.",
+    "loginSuccessful": "Login successful!",
+    "loginNotSuccessful": "Login or password isn't correct! "
 }
 
 let registerButton = document.getElementById("registerButtonSubmit");
 
-initRegisterButton();
-
-function initRegisterPage(){
-    initRegisterButton();
-}
+initRegisterPage();
 
 ////////////////////////////////////////////
 /// main module function ///////////////////
-export function initRegisterButton(){
+function initRegisterPage(){
+    let active_url = window.location.href;
+    if (active_url.includes(urlRegister)){
+        initRegisterButton();
+    }
+}
+function initRegisterButton(){
     registerButton.addEventListener("click", registerProcessLinkedToButton);
 
 }
@@ -43,6 +49,11 @@ function registerProcessLinkedToButton(e){
     sendRegistrationDataToServer();
 }
 
+
+////////////////////////////////////////////
+/// module subfunctions ///////////////////
+
+
 function getUserRegisterInput(){
     userRegistrationEmail = document.getElementById("login").value;
     userRegistrationPassword = document.getElementById("password1").value;
@@ -51,23 +62,26 @@ function getUserRegisterInput(){
 }
 
 function checkUserRegistrationData(){
-    resetHintMessages();
-    checkPasswordConfirmedMatchPassword();
-    checkValidPasswordLength();
-    checkValidEmail();
-    checkNotEmptyEmail();
+    resetHintMessages(userRegistrationDataCorrect);
+    var check_MatchPasswords = checkPasswordConfirmedMatchPassword(
+        userRegistrationPassword, userRegistrationPasswordConfirmed
+    );
+    var check_PasswordLenght = checkValidPasswordLength(userRegistrationPassword);
+    var check_ValidEmail = checkValidEmail(userRegistrationEmail);
+    var check_NotEmptyEmail = checkNotEmptyEmail(userRegistrationEmail);
+    userRegistrationDataCorrect = check_MatchPasswords && check_PasswordLenght && check_ValidEmail && check_NotEmptyEmail;
     if (userRegistrationDataCorrect == true){
         hintMessages.push(hintMessageType["registrationDataCorrect"]);
     }
     //console.log(hintMessages);
-    showUserHintMessages();
+    showUserHintMessages(userRegistrationDataCorrect);
 
 }
 
 function sendRegistrationDataToServer(){
     if (userRegistrationDataCorrect === true){
 
-        registerButton.hidden = true
+        registerButton.hidden = true;
         sendUserRegistrationData();
     }else{
 
@@ -75,21 +89,17 @@ function sendRegistrationDataToServer(){
 }
 
 
-
-////////////////////////////////////////////
-/// module subfunctions ///////////////////
-
-function resetHintMessages(){
-    userRegistrationDataCorrect = true;
+export function resetHintMessages(userDataCorrect){
+    userDataCorrect = true;
     hintMessages = [];
 }
 
-function showUserHintMessages(){
+export function showUserHintMessages(userDataCorrectCheck){
     let hintMessagesDiv = document.getElementById("hintMessages");
     hintMessagesDiv.innerHTML = "";
 
     let cssClassStatus = "hintMessagesWrong";
-    if (userRegistrationDataCorrect == true){
+    if (userDataCorrectCheck == true){
         cssClassStatus = "hintMessagesCorrect";
     }
 
@@ -124,66 +134,64 @@ function showServerRegistrationStatus(){
 }
 
 
-function checkValidPasswordLength(){
-    if (userRegistrationPassword.length <= minPasswordLength){
-      userRegistrationDataCorrect = false;
+export function checkValidPasswordLength(password){
+    if (password.length <= minPasswordLength){
       hintMessages.push(hintMessageType["errorMinPasswordLength"]);
+      return false;
+    }else{
+        return true;
     }
 }
 
-function checkValidEmail() {
-    if ((userRegistrationEmail.indexOf("@") == -1) &&
-        (userRegistrationEmail.indexOf(".") == -1)) {
-        userRegistrationDataCorrect = false;
+export function checkValidEmail(email) {
+    if ((email.indexOf("@") == -1) ||
+        (email.indexOf(".") == -1)) {
         hintMessages.push(hintMessageType["errorNotValidEmail"]);
+        return false;
+    }else{
+        return true;
     }
 }
-function checkPasswordConfirmedMatchPassword(){
-    if (userRegistrationPassword !== userRegistrationPasswordConfirmed){
-        userRegistrationDataCorrect = false;
+function checkPasswordConfirmedMatchPassword(password1, password2){
+    if (password1 !== password2){
         hintMessages.push(hintMessageType["errorConfirmation"]);
+        return false;
+    }else{
+        return true;
     }
 }
 
-function checkNotEmptyEmail(){
-    if (userRegistrationEmail.length === 0){
-        userRegistrationDataCorrect = false;
+export function checkNotEmptyEmail(email){
+    if (email.length === 0){
         hintMessages.push(hintMessageType["errorEmptyEmail"]);
+        return false;
+    }else{
+        return true;
     }
 }
 
 
-export function hashPasswordBeforeSend(){
-    const saltRounds = 10;
-    bcrypt.genSalt(saltRounds, function(err, salt) {
-        bcrypt.hash(userRegistrationPassword, salt, function (err, hash) {
-            userRegistrationHashedPassword = hash;
-            console.log(hash);
-        });
-    });
-};
-
-
-let urlRegister = "/register"
-export function sendUserRegistrationData(){
+function sendUserRegistrationData(){
     fetch(urlRegister,{
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json'
-                },
-            body: JSON.stringify({"login": userRegistrationEmail, "password": userRegistrationPassword })
-            }
-        )
-        .then(response => response.json())
-        .then(function (response){
-            if (response['registration_success_status'] === "login exist"){
-                registrationSuccessStatus = false;
-            }else{
-                registrationSuccessStatus = true;
-            }
-            showServerRegistrationStatus();
-            registerButton.hidden = false;
-            console.log(response)
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+            },
+        body: JSON.stringify({
+            "login": userRegistrationEmail,
+            "password": userRegistrationPassword
         })
+    })
+    .then(response => response.json())
+    .then(function checkAndShowRegistrationStatus(response){
+        if (response['registration_success_status'] === "login exist"){
+            registrationSuccessStatus = false;
+        }else{
+            registrationSuccessStatus = true;
+        }
+        showServerRegistrationStatus();
+        registerButton.hidden = false;
+        //console.log(response);
+    })
 }

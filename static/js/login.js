@@ -1,48 +1,126 @@
-import {minPasswordLenghtSigns,
-    timeToShowHint,
-    hintMessages,
+import {
+    minPasswordLength,
     hintMessageType,
-    hashPasswordBeforeSend,
-    prepareUserDataToSend,
-    sendUserRegistrationData,
-    showHints
-} from "/static/js/register"
+    checkNotEmptyEmail,
+    checkValidEmail,
+    checkValidPasswordLength,
+    showUserHintMessages,
+    resetHintMessages
+} from "/static/js/register.js"
 
-const userEmail = "";
-const userPassword = "";
-const userHashedPassword = "";
-const registeringProcessSuccess = "false";
+let userEmail = "";
+let userPassword = "";
+let hintMessages = [];
 
-const timeToShowHint = "5";
-const hintMessage = "";
+let userLoginDataCorrect = true;
+let loginSuccessStatus = false;
 
-
-var registerButton = document.getElementById("loginButtonSubmit");
+let urlLogin = "/login";
 
 
+let loginButton = document.getElementById("loginButtonSubmit");
+
+initLoginPage();
+////////////////////////////////////////////
+/// main module function ///////////////////
+function initLoginPage(){
+    let active_url = window.location.href;
+    if (active_url.includes(urlLogin)){
+        initLoginButton();
+    }
+}
 
 function initLoginButton(){
+    loginButton.addEventListener("click", loginProcessLinkedToButton);
+}
+
+
+function loginProcessLinkedToButton() {
+    getUserLoginInput();
+    checkUserLoginData();
+    sendLoginDataToServer();
 
 }
 
-function loginProcessLinkedToButton(){
-
-}
-
+////////////////////////////////////////////
+/// module subfunctions ///////////////////
 function getUserLoginInput(){
-
+    userEmail = document.getElementById("login").value;
+    userPassword = document.getElementById("password").value;
+    //console.log(userEmail, userPassword);
 }
 
-// login process looks similar to registration process
-// so we use according function's
-//
-// same function in register.js module
-// hashPasswordBeforeSend
-// prepareUserDataToSend
-// sendUserRegistrationData
 
+function checkUserLoginData() {
+    resetHintMessages(userLoginDataCorrect);
+    var check_NotEmptyEmail = checkNotEmptyEmail(userEmail);
+    var check_ValidEmail = checkValidEmail(userEmail);
+    var chek_ValidPasswordLength = checkValidPasswordLength(userPassword);
 
-function confirmLoginStatus(){
-
+    userLoginDataCorrect = check_NotEmptyEmail && check_ValidEmail && chek_ValidPasswordLength;
+    if(userLoginDataCorrect === true){
+        hintMessages.push(hintMessageType["loginDataCorrect"]);
+    }
+    //console.log(hintMessages);
+    showUserHintMessages(userLoginDataCorrect);
 }
+
+function showServerLoginStatus(){
+    hintMessages = [];
+    if (loginSuccessStatus === false){
+        hintMessages.push(hintMessageType['loginNotSuccessful'])
+    }else{
+        hintMessages.push(hintMessageType["loginSuccessful"])
+    }
+
+
+    let hintMessagesDiv = document.getElementById("hintMessages");
+    hintMessagesDiv.innerHTML = "";
+
+    let cssClassStatus = "hintMessagesWrong";
+        if (loginSuccessStatus === true){
+        cssClassStatus = "hintMessagesCorrect";
+    }
+    let newHintDiv = document.createElement("div");
+        newHintDiv.classList.add(cssClassStatus);
+        newHintDiv.innerText = hintMessages[0];
+        hintMessagesDiv.appendChild(newHintDiv);
+}
+
+
+function sendLoginDataToServer(){
+    if(userLoginDataCorrect === true){
+        loginButton.hidden = true;
+        sendUserLoginData();
+    }else{
+
+    }
+}
+
+
+function sendUserLoginData(){
+    fetch(urlLogin, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+        },
+        body: JSON.stringify({
+            "login": userEmail,
+            "password": userPassword
+        })
+    })
+    .then(response => response.json())
+    .then(function checkAndShowLoginStatus(response){
+        if (response['login_success_status'] === 'login error'){
+            loginSuccessStatus = false;
+        }else{
+            loginSuccessStatus = true;
+        }
+        showServerLoginStatus();
+        loginButton.hidden = false;
+        //console.log(response);
+    })
+}
+
 

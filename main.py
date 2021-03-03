@@ -43,10 +43,21 @@ def login():
                            session=session)
 
 @app.route("/login", methods=["POST"])
+@json_response
 def login_post():
-    """
-        This is loging in...
-    """
+    if request.is_json:
+        login_data = request.get_json()
+        login = login_data['login']
+        password = login_data['password']
+        hashpassword = bcrypt.hashpw(password.encode('utf-8'), \
+                                     bcrypt.gensalt(gensalt_size))
+        #login_success_status = data_handler.login_user(login, hashpassword)
+        login_success_status = True
+        if login_success_status:
+            return {'login_success_status': 'login success'}
+        else:
+            return {'login_success_status': 'login error'}
+
 
 
 @app.route("/register", methods=["GET"])
@@ -61,7 +72,6 @@ def register():
 @app.route("/register", methods=["POST"])
 @json_response
 def register_post():
-
     if request.is_json:
         registration_data = request.get_json()
         login = registration_data['login']
@@ -69,12 +79,10 @@ def register_post():
         hashpassword  = bcrypt.hashpw(password.encode('utf-8'), \
                                      bcrypt.gensalt(gensalt_size))
 
-        registration_success_status = data_handler.register_new_user(login, hashpassword )
+        registration_success_status = data_handler.register_new_user(login, hashpassword)
 
         if registration_success_status:
-            return {'registration_success_status': "success", \
-                     registration_data['login']: registration_data['password'], \
-                    login: f"{hashpassword}"}
+            return {'registration_success_status': "success"}
         else:
             return {'registration_success_status': "login exist"}
 

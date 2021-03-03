@@ -1,6 +1,7 @@
 {% extends "layout.html" %}
 
 {% block content %}
+    <script type="module" src="/static/js/login.js" defer></script>
 
 <div class="wrapper fadeInDown">
   <div id="formContent">
@@ -12,11 +13,11 @@
       <input type="password" id="password" class="fadeIn third" name="login" placeholder="password">
       <input id="loginButtonSubmit" type="button" class="fadeIn fourth" value="Log In">
     </form>
-
+    <div id="hintMessages" class = "hintMessages"></div>
     <!-- Remind Passowrd -->
-    <div> <!----- id="formFooter" -->
-      <a class="aForgetPasswordLink" href="#">Forgot Password?</a>
-    </div>
+{#    <div> <!----- id="formFooter" -->#}
+{#      <a class="aForgetPasswordLink" href="#">Forgot Password?</a>#}
+{#    </div>#}
     <div>
         <form action={{ url_for("register") }}>
             <button class="loginButton">
