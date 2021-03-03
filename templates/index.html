@@ -3,6 +3,9 @@
 {% block content %}
     <script type="module" src="{{ url_for('static', filename='js/main.js') }}" defer></script>
 
+    {% if session.login %}
+        <h1>User is logged in</h1>
+    {% endif %}
     <div id="boards">
     </div>
     <div id="display-board">

@@ -1,4 +1,5 @@
-from flask import Flask, render_template, url_for, redirect, request, session, \
+from flask import Flask, render_template, url_for, redirect, request, \
+    session, \
     jsonify, json
 from settings import server_state
 import data_handler
@@ -10,11 +11,9 @@ from os import urandom
 import bcrypt
 
 
-import register, login
-
-
 app = Flask(__name__)
-app.secret_key = urandom(5)
+app.secret_key = urandom(5) # for session
+SESSION_KEY = "login"
 gensalt_size = 10
 
 """
@@ -42,6 +41,12 @@ def login():
                            server_state = server_state,\
                            session=session)
 
+@app.route("/logout")
+def logout():
+    if SESSION_KEY in session:
+        session.pop(SESSION_KEY)
+        redirect(url_for("index"))
+
 @app.route("/login", methods=["POST"])
 @json_response
 def login_post():
@@ -53,6 +58,7 @@ def login_post():
                                      bcrypt.gensalt(gensalt_size))
         login_success_status = data_handler.check_user_login_data(login, password)
         if login_success_status:
+            session[SESSION_KEY] = login
             return {'login_success_status': 'login success'}
         else:
             return {'login_success_status': 'login error'}
