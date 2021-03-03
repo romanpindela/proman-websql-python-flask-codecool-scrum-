@@ -5,7 +5,8 @@ import {
     checkValidEmail,
     checkValidPasswordLength,
     showUserHintMessages,
-    resetHintMessages
+    resetHintMessages,
+    showWaitForResponse
 } from "/static/js/register.js"
 
 let userEmail = "";
@@ -91,6 +92,7 @@ function showServerLoginStatus(){
 function sendLoginDataToServer(){
     if(userLoginDataCorrect === true){
         loginButton.hidden = true;
+        showWaitForResponse("on");
         sendUserLoginData();
     }else{
 
@@ -118,6 +120,7 @@ function sendUserLoginData(){
             loginSuccessStatus = true;
         }
         showServerLoginStatus();
+        showWaitForResponse("off");
         loginButton.hidden = false;
         //console.log(response);
     })

@@ -47,6 +47,12 @@
     font-weight: bold;
 }
 
+.serverRespondingText{
+    color:  #98f4f4;
+    font-size: 17px;
+    font-weight: bold;
+}
+
 .hintMessagesCorrect{
     color: #4AD295;
     font-weight: bold;

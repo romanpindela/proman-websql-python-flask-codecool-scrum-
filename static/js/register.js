@@ -53,6 +53,14 @@ function registerProcessLinkedToButton(e){
 ////////////////////////////////////////////
 /// module subfunctions ///////////////////
 
+export function showWaitForResponse(status){
+    let waitForResponseDiv = document.getElementById("waitForResponse");
+    if(status === "on"){
+        waitForResponseDiv.innerText = "Please wait ...";
+    }else {
+        waitForResponseDiv.innerText = "";
+    }
+}
 
 function getUserRegisterInput(){
     userRegistrationEmail = document.getElementById("login").value;
@@ -82,6 +90,7 @@ function sendRegistrationDataToServer(){
     if (userRegistrationDataCorrect === true){
 
         registerButton.hidden = true;
+        showWaitForResponse("on");
         sendUserRegistrationData();
     }else{
 
@@ -191,6 +200,7 @@ function sendUserRegistrationData(){
             registrationSuccessStatus = true;
         }
         showServerRegistrationStatus();
+        showWaitForResponse("off");
         registerButton.hidden = false;
         //console.log(response);
     })
