@@ -99,3 +99,17 @@ def register_new_user(cursor: RealDictCursor, loginname, password):
         "password": password
         }
     cursor.execute(command, param)
+
+
+@connection_handler
+def get_user_password(cursor: RealDictCursor, loginname):
+    command = """
+        SELECT password
+        FROM users
+        WHERE login = %(login)s
+    """
+    param = {
+        "login": f"{loginname}",
+    }
+    cursor.execute(command, param)
+    return cursor.fetchone()

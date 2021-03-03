@@ -6,6 +6,7 @@ from psycopg2.extras import RealDictCursor
 from settings import *
 
 from datetime import date, datetime
+import bcrypt
 
 import connection
 
@@ -60,4 +61,12 @@ def register_new_user(loginname, password):
         return True;
     else:
         return False;
+
+def check_user_login_data(loginname, password_encoded_utf8):
+    if not check_if_login_doesnt_exist(loginname):
+        db_hash_password = persistence_postgres.get_user_password(loginname).get('password')
+        db_hash_bytes_password_encoded_utf8 = db_hash_password.encode("UTF-8")
+        return bcrypt.checkpw(password_encoded_utf8,db_hash_bytes_password_encoded_utf8)
+    else:
+        return False
 

@@ -48,11 +48,10 @@ def login_post():
     if request.is_json:
         login_data = request.get_json()
         login = login_data['login']
-        password = login_data['password']
-        hashpassword = bcrypt.hashpw(password.encode('utf-8'), \
+        password = login_data['password'].encode("UTF-8")
+        hashpassword = bcrypt.hashpw(password, \
                                      bcrypt.gensalt(gensalt_size))
-        #login_success_status = data_handler.login_user(login, hashpassword)
-        login_success_status = True
+        login_success_status = data_handler.check_user_login_data(login, password)
         if login_success_status:
             return {'login_success_status': 'login success'}
         else:
@@ -79,7 +78,7 @@ def register_post():
         hashpassword  = bcrypt.hashpw(password.encode('utf-8'), \
                                      bcrypt.gensalt(gensalt_size))
 
-        registration_success_status = data_handler.register_new_user(login, hashpassword)
+        registration_success_status = data_handler.register_new_user(login, hashpassword.decode("utf-8"))
 
         if registration_success_status:
             return {'registration_success_status': "success"}
