@@ -151,6 +151,12 @@ def edit_board():
     data_handler.edit_board(content)
 
     return ""
+
+@app.route("/columns/<int:board_id>",  methods=['GET'])
+@json_response
+def get_columns(board_id: int):
+    return data_handler.get_columns(board_id)
+
 @app.route("/cards/<int:board_id>")
 @json_response
 def get_cards_for_board(board_id: int):

@@ -114,6 +114,21 @@ def create_column(cursor: RealDictCursor, board_id, order, name):
 
     cursor.execute(command, param)
 
+@connection_handler
+def get_columns(cursor: RealDictCursor, board_id):
+    command = """
+            SELECT name,"order"
+            FROM columns
+            WHERE board_id = %(board_id)s;
+        """
+
+    param = {
+        'board_id': board_id,
+    }
+
+    cursor.execute(command, param)
+    return cursor.fetchall()
+
 #Users
 @connection_handler
 def check_login_exist(cursor: RealDictCursor, loginame):

@@ -49,6 +49,11 @@ def delete_board(parameters):
 def edit_board(parameters):
     return persistence_postgres.edit_board(parameters)
 
+#Columns
+
+def get_columns(board_id):
+    return persistence_postgres.get_columns(board_id)
+
 #Cards
 
 

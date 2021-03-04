@@ -14,6 +14,7 @@ export let domBoard = {
          dataHandler.getBoard(boardId, function(board){
             domBoard.showBoard(board);
         });
+         domBoard.loadColumns(boardId);
     },
     showBoard: function(board){
         if(board === undefined) return;
@@ -44,7 +45,24 @@ export let domBoard = {
         let board_user_id = element.querySelector("#board_user_id")
         board_user_id.innerText = "Board created by " + board.user_id
 
+        element.addEventListener('load', ()=> {
+            var el = document.getElementById('columns');
+            alert('load')
+            new Sortable(el, {
+                group: 'shared', // set both lists to same group
+                animation: 150
+            });
+        })
+
         boardDiv.appendChild(element)
 
+    },
+    loadColumns: function (board_id){
+        dataHandler.get_columns(board_id, (columns)=>{
+            this.showColumns(columns)
+        });
+    },
+    showColumns: function(columns){
+        console.log(columns)
     }
 }
