@@ -4,7 +4,9 @@
 
 .page{
     max-width: 1440px;
-    margin: 0 auto;
+    margin: 70px auto;
+    margin-left: 70px;
+    margin-right: 70px;
 }
 
 * {
@@ -29,6 +31,11 @@
     display: inline;
 }
 
+.loginname{
+    display: inline;
+    margin-right: 150px;
+    text-align: right;
+}
 
 .imgLoginButton {
     width: 100px;

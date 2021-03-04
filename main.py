@@ -41,11 +41,15 @@ def login():
                            server_state = server_state,\
                            session=session)
 
-@app.route("/logout")
+@app.route("/logout", methods=["POST"])
 def logout():
+    print(session)
+    print(session[SESSION_KEY])
+    print(SESSION_KEY)
     if SESSION_KEY in session:
         session.pop(SESSION_KEY)
-        redirect(url_for("index"))
+        return redirect(url_for("index"))
+
 
 @app.route("/login", methods=["POST"])
 @json_response
