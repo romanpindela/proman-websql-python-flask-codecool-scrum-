@@ -37,9 +37,13 @@ def get_board(cursor: RealDictCursor, board_id, force=False):
 @connection_handler
 def create_board(cursor: RealDictCursor, board):
     command = """
+        
         INSERT INTO boards (id, title, private , user_id)
         VALUES (NULLIF((select max(id) from boards),0)+1,  %(title)s, %(private)s, %(user_id)s);
-        """
+        RETURNING id;
+       
+    """
+
     param = {
         'title': board['title'],
         'private': board['private'],
@@ -51,8 +55,25 @@ def create_board(cursor: RealDictCursor, board):
 @connection_handler
 def delete_board(cursor: RealDictCursor, parameters):
     command = """
-        DELETE FROM boards
-        where id = %(board_id)s and (private = false or (private = true and user_id = %(user_id)s))
+        DO $$                  
+        BEGIN
+            IF EXISTS(SELECT 1 
+                FROM boards
+                where id = %(board_id)s and (private = false or (private = true and user_id = %(user_id)s))
+                )
+            THEN
+                        DELETE FROM cards
+                        where board_id = %(board_id)s;
+            
+                        DELETE FROM columns
+                        where board_id = %(board_id)s;
+                    
+                        DELETE FROM boards
+                        where id = %(board_id)s and (private = false or (private = true and user_id = %(user_id)s));
+                        
+            END IF;        
+        END
+        $$ ;
     """
     param = {
         'board_id': parameters['board_id'],
