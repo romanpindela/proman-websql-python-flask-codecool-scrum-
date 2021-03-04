@@ -14,6 +14,7 @@ from psycopg2.extensions import AsIs
 
 import connection
 
+#Boards
 @connection.connection_handler
 def get_boards(cursor: RealDictCursor, force=False):
     query = """
@@ -38,9 +39,10 @@ def get_board(cursor: RealDictCursor, board_id, force=False):
 def create_board(cursor: RealDictCursor, board):
     command = """
         
-        INSERT INTO boards (id, title, private , user_id)
-        VALUES (NULLIF((select max(id) from boards),0)+1,  %(title)s, %(private)s, %(user_id)s);
-        RETURNING id;
+        INSERT INTO boards (id, title, "private" , user_id)
+        VALUES (COALESCE((select max(id) from boards),0)+1,  %(title)s, %(private)s, %(user_id)s);
+        
+        SELECT MAX(id) as id FROM boards;
        
     """
 
@@ -50,7 +52,8 @@ def create_board(cursor: RealDictCursor, board):
         'user_id': board['user_id']
     }
     cursor.execute(command, param)
-    return 0
+    result = cursor.fetchall()
+    return result[0]['id']
 
 @connection_handler
 def delete_board(cursor: RealDictCursor, parameters):
@@ -63,7 +66,7 @@ def delete_board(cursor: RealDictCursor, parameters):
                 )
             THEN
                         DELETE FROM cards
-                        where board_id = %(board_id)s;
+                        where column_id in (select id from columns where board_id = %(board_id)s );
             
                         DELETE FROM columns
                         where board_id = %(board_id)s;
@@ -95,6 +98,23 @@ def edit_board(cursor: RealDictCursor, parameters):
     }
     cursor.execute(command, param)
 
+#Columns
+@connection_handler
+def create_column(cursor: RealDictCursor, board_id, order, name):
+    command = """
+            INSERT INTO columns (id, board_id, "order", name)
+            VALUES (COALESCE((select max(id) from columns),0)+1,  %(board_id)s, %(order)s, %(name)s);
+        """
+
+    param = {
+        'board_id': board_id,
+        'order': order,
+        'name': name
+    }
+
+    cursor.execute(command, param)
+
+#Users
 @connection_handler
 def check_login_exist(cursor: RealDictCursor, loginame):
     command = """
@@ -120,7 +140,6 @@ def register_new_user(cursor: RealDictCursor, loginname, password):
         "password": password
         }
     cursor.execute(command, param)
-
 
 @connection_handler
 def get_user_password(cursor: RealDictCursor, loginname):

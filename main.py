@@ -120,8 +120,10 @@ def get_board(board_id: int):
 def create_board():
     content = request.json
 
-    # TODO: Get user name from session
-    content["user_id"] = "test"
+    if session is None:
+        return ""
+
+    content["user_id"] = session[SESSION_KEY]
     data_handler.create_board(content)
 
     return ""
@@ -131,8 +133,10 @@ def create_board():
 def delete_board():
     content = request.json
 
-    # TODO: Get user name from session
-    content["user_id"] = "test"
+    if session is None:
+        return ""
+
+    content["user_id"] = session[SESSION_KEY]
     data_handler.delete_board(content)
 
     return ""

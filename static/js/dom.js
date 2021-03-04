@@ -33,6 +33,10 @@ export let dom = {
             })
         templates.appendChild(templates_div)
     },
+    getElementFromTemplate: function (template_id){
+         let template = document.getElementById(template_id);
+         return template.content.cloneNode(true)
+    },
     loadCards: function (boardId) {
         // retrieves cards and makes showCards called
     },

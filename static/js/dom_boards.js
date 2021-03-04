@@ -83,12 +83,12 @@ export let domBoards = {
             })
             let privateLabel= row.querySelector('#private')
             if(board.private){
-                privateLabel.innerText = "Private";
-                privateLabel.className = "privatePublic";
+                privateLabel.innerText = " Private";
+                privateLabel.className = "fa fa-lock";
             }
             else{
                 privateLabel.innerText = "Public";
-                privateLabel.className = "privatePublic";
+                privateLabel.className = "fa fa-unlock";
             }
             // row.querySelector('#private').innerText = board.private;
             let deleteBtn = row.querySelector("#delete")
