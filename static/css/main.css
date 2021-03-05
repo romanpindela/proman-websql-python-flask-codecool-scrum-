@@ -3,10 +3,12 @@
 }
 
 .page{
-    max-width: 1440px;
-    margin: 70px auto;
-    margin-left: 70px;
-    margin-right: 70px;
+    max-width: 1920px;
+    margin-left: 200px;
+    margin-right: 200px;
+    margin-top: 30px;
+    margin-bottom: 30px;
+    align-content: center;
 }
 
 * {
@@ -24,29 +26,31 @@
 }
 
 .loginButtonMain {
-    width: 100px;
+    width: 50px;
     height: auto;
     border: none;
     background: none;
     display: inline;
+    margin-left: -5px;
 }
 
 .loginname{
     display: inline;
-    margin-right: 150px;
     text-align: right;
 }
 
 .imgLoginButton {
-    width: 100px;
+    width: 50px;
     height: auto;
     display: inline;
+    margin-left: -30px;
 }
 
 .textFooter {
-    color: #ffffff;
-    font-weight: bold;
-    background: #98f4f4;
+    color: #bababa;
+    font-weight: regular;
+    font-size: 11pt;
+    background: #fcfcfc;
 }
 
 .hintMessagesWrong{
