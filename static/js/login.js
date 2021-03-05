@@ -118,6 +118,7 @@ function sendUserLoginData(){
             loginSuccessStatus = false;
         }else{
             loginSuccessStatus = true;
+            setTimeout(redirectToHomePage,1000);
         }
         showServerLoginStatus();
         showWaitForResponse("off");
@@ -127,3 +128,6 @@ function sendUserLoginData(){
 }
 
 
+function redirectToHomePage(){
+    window.location.href = '/';
+}

@@ -156,6 +156,10 @@ def get_cards_for_board(board_id: int):
     """
     return data_handler.get_cards_for_board(board_id)
 
+@app.route("/getquote", methods=["GET"])
+def get_random_quote():
+    pass
+
 
 
 def main():
