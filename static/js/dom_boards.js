@@ -44,7 +44,7 @@ export let domBoards = {
             dataHandler.createNewBoard(title, isPrivate, (response) => {
                 console.log(response)
                 $("#createBoardModal").modal('hide');
-                //this.loadBoards()
+                this.loadBoards()
             })
 
         })
