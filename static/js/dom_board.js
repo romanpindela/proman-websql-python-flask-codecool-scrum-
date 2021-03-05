@@ -6,11 +6,15 @@ import { domBoards } from "./dom_boards.js";
 export let domBoard = {
     init: function () {
         // This function should run once, when the page is loaded.
+        let url = "board_templates.html"
+        let divId = "templates_board"
+        dom.loadTemplates(divId, url)
     },
     getBoard: function(boardId){
          dataHandler.getBoard(boardId, function(board){
             domBoard.showBoard(board);
         });
+         domBoard.loadColumns(boardId);
     },
     showBoard: function(board){
         if(board === undefined) return;
@@ -29,17 +33,36 @@ export let domBoard = {
         })
         boardDiv.insertAdjacentElement('beforeend', backButton)
 
-        console.log(board)
-        let table = document.createElement("table")
-        let tr1 = '<tr>' + '<th>Title</th>' + '<td>' + board.title + '</td>' +'</tr>'
-        table.insertAdjacentHTML('beforeend', tr1)
+        let element = dom.getElementFromTemplate("board")
+        let board_title = element.querySelector("#board_title")
+        board_title.innerText = board.title
+        if(board.private){
+            board_title.className = "fa fa-lock"
+        }else{
+             board_title.className = "fa fa-unlock"
+        }
 
-        tr1 = '<tr>' + '<th>Created by </th>' + '<td>' + board.user_id + '</td>' +'</tr>'
-        table.insertAdjacentHTML('beforeend', tr1)
+        let board_user_id = element.querySelector("#board_user_id")
+        board_user_id.innerText = "Board created by " + board.user_id
 
-        tr1 = '<tr>' + '<th>Is private </th>' + '<td>' + board.private + '</td>' +'</tr>'
-        table.insertAdjacentHTML('beforeend', tr1)
+        element.addEventListener('load', ()=> {
+            var el = document.getElementById('columns');
+            alert('load')
+            new Sortable(el, {
+                group: 'shared', // set both lists to same group
+                animation: 150
+            });
+        })
 
-        boardDiv.insertAdjacentElement('beforeend', table);
+        boardDiv.appendChild(element)
+
+    },
+    loadColumns: function (board_id){
+        dataHandler.get_columns(board_id, (columns)=>{
+            this.showColumns(columns)
+        });
+    },
+    showColumns: function(columns){
+        console.log(columns)
     }
 }

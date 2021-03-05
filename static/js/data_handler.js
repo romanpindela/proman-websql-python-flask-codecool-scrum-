@@ -109,7 +109,7 @@ export let dataHandler = {
         // creates new card, saves it and calls the callback function with its data
     },
     // here comes more features
-    editBoard(id, title, callback) {
+    editBoard: function (id, title, callback) {
         let data = {
             id : id,
             title: title
@@ -118,5 +118,11 @@ export let dataHandler = {
         console.log(data)
 
         this._api_post("/board/edit", data, callback)
+    },
+    get_columns: function (board_id, callback){
+        this._api_get('/columns/'+board_id, (response) => {
+            callback(response);
+        });
+
     }
 };

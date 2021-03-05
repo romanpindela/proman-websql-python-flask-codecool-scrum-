@@ -29,17 +29,33 @@ def get_boards():
     """
     return persistence_postgres.get_boards(force=True)
 
+#Boards
 def get_board(board_id):
     return persistence_postgres.get_board(board_id, force=True)[0]
 
 def create_board(board):
-    return persistence_postgres.create_board(board)
+    board_id = persistence_postgres.create_board(board)
+
+    persistence_postgres.create_column(board_id, 1, 'New')
+    persistence_postgres.create_column(board_id, 2, 'In Progress')
+    persistence_postgres.create_column(board_id, 3, 'Testing')
+    persistence_postgres.create_column(board_id, 4, 'Done')
+
+    return board_id
 
 def delete_board(parameters):
     return persistence_postgres.delete_board(parameters)
 
 def edit_board(parameters):
     return persistence_postgres.edit_board(parameters)
+
+#Columns
+
+def get_columns(board_id):
+    return persistence_postgres.get_columns(board_id)
+
+#Cards
+
 
 def get_cards_for_board(board_id):
     persistence_postgres.clear_cache()
