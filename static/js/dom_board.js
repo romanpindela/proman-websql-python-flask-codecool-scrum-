@@ -22,14 +22,14 @@ export let domBoard = {
         domBoards.hide();
 
         //put here logic responsible for display board
-        let boardDiv = document.querySelector("#display-board");
+        let boardDiv = document.querySelector("#boards");
         let backButton = document.createElement('button')
         backButton.innerText = "Back to boards"
         backButton.classList.add("btn")
         backButton.classList.add("btn-primary")
         backButton.addEventListener('click', ()=>{
+            dom.hide("#boards")
             dom.loadBoards()
-            dom.hide("#display-board")
         })
         boardDiv.insertAdjacentElement('beforeend', backButton)
 
@@ -45,14 +45,12 @@ export let domBoard = {
         let board_user_id = element.querySelector("#board_user_id")
         board_user_id.innerText = "Board created by " + board.user_id
 
-        element.addEventListener('load', ()=> {
-            var el = document.getElementById('columns');
-            alert('load')
-            new Sortable(el, {
-                group: 'shared', // set both lists to same group
-                animation: 150
-            });
-        })
+        var el = document.getElementById('columns');
+        new Sortable(el, {
+            group: 'shared', // set both lists to same group
+            animation: 150
+        });
+
 
         boardDiv.appendChild(element)
 

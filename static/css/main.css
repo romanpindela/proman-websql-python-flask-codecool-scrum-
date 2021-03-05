@@ -1,12 +1,13 @@
 #boards {
     background-color: #d3fffd;
+    padding: 30px;
 }
 
 .page{
     max-width: 1920px;
     margin-left: 200px;
     margin-right: 200px;
-    margin-top: 30px;
+    /*margin-top: 30px;*/
     margin-bottom: 30px;
     align-content: center;
 }
@@ -74,4 +75,5 @@
 }
 h1{
     font-family: monospace;
+    padding: 5px;
 }
