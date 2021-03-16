@@ -38,6 +38,8 @@
 .loginname{
     display: inline;
     text-align: right;
+    color: grey;
+    font-weight: bold;
 }
 
 .imgLoginButton {
@@ -45,6 +47,13 @@
     height: auto;
     display: inline;
     margin-left: -30px;
+}
+
+.imgLoginButtonNavBar{
+    width: 80px;
+    height: auto;
+    display: inline;
+
 }
 
 .textFooter {
