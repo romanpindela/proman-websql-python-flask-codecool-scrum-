@@ -115,11 +115,26 @@ def create_column(cursor: RealDictCursor, board_id, order, name):
     cursor.execute(command, param)
 
 @connection_handler
+def create_column(cursor: RealDictCursor, board_id, name):
+    command = """
+            INSERT INTO columns (id, board_id, "order", name)
+            VALUES (COALESCE((select max(id) from columns),0)+1,  %(board_id)s, COALESCE((select max(id) from columns where board_id = %(board_id)s),0)+1, %(name)s);
+        """
+
+    param = {
+        'board_id': board_id,
+        'name': name
+    }
+
+    cursor.execute(command, param)
+
+@connection_handler
 def get_columns(cursor: RealDictCursor, board_id):
     command = """
-            SELECT name,"order"
+            SELECT id, name,"order"
             FROM columns
-            WHERE board_id = %(board_id)s;
+            WHERE board_id = %(board_id)s
+            ORDER BY "order";
         """
 
     param = {
@@ -168,3 +183,144 @@ def get_user_password(cursor: RealDictCursor, loginname):
     }
     cursor.execute(command, param)
     return cursor.fetchone()
+
+@connection_handler
+def update_column_order(cursor: RealDictCursor, id, order):
+    command = """
+            UPDATE columns
+            SET
+                "order" = %(order)s
+            WHERE id = %(id)s
+        """
+    param = {
+        "id": id,
+        "order": order
+    }
+    cursor.execute(command, param)
+
+@connection_handler
+def get_cards(cursor: RealDictCursor, boardId):
+    command = """
+            SELECT cards.id, description, column_id, cards."order", archived
+            FROM cards, columns
+            WHERE cards.column_id = columns.id and board_id = %(board_id)s and archived = False
+        """
+    param = {
+        "board_id": f"{boardId}",
+    }
+    cursor.execute(command, param)
+    return cursor.fetchall()
+
+
+@connection_handler
+def create_card(cursor: RealDictCursor, boardId, description):
+    command = """
+             INSERT INTO cards (id, description, column_id, "order", archived)
+            VALUES (COALESCE((select max(id) from cards),0)+1, 
+            %(description)s,             
+             (select min(id) from columns where board_id = %(board_id)s),             
+              COALESCE((select max("order") from cards where column_id in ((select min(id) from columns where board_id = %(board_id)s)) ),0)+1, 
+             False);
+        """
+    param = {
+        "board_id": boardId,
+        "description": description
+    }
+    cursor.execute(command, param)
+
+@connection_handler
+def get_column_cards(cursor: RealDictCursor, column_id):
+    command = """
+               SELECT id, description, column_id, "order", archived
+               FROM cards
+               WHERE column_id = %(column_id)s and archived = False
+           """
+    param = {
+        "column_id": f"{column_id}",
+    }
+    cursor.execute(command, param)
+    return cursor.fetchall()
+
+@connection_handler
+def get_card(cursor: RealDictCursor, card_id):
+    command = """
+                  SELECT id, description, column_id, "order", archived
+                  FROM cards
+                  WHERE id = %(card_id)s 
+              """
+    param = {
+        "card_id": f"{card_id}",
+    }
+    cursor.execute(command, param)
+    return cursor.fetchone()
+
+@connection_handler
+def edit_column(cursor: RealDictCursor, column_id, name):
+    command = """
+                    UPDATE columns
+                    SET
+                        name = %(name)s
+                    WHERE id = %(id)s
+                """
+    param = {
+        "id": column_id,
+        "name": name
+    }
+    cursor.execute(command, param)
+
+@connection_handler
+def delete_column(cursor: RealDictCursor, column_id):
+    command = """
+                    DELETE FROM cards
+                    WHERE column_id = %(id)s;
+                    
+                    DELETE FROM columns
+                    WHERE id = %(id)s
+                """
+    param = {
+        "id": column_id
+    }
+    cursor.execute(command, param)
+
+@connection_handler
+def update_card_order(cursor: RealDictCursor, card):
+    command = """
+                UPDATE cards
+                SET
+                    column_id = %(column_id)s,
+                    "order" = %(order)s
+                WHERE id = %(id)s
+            """
+    param = {
+        "id": card["id"],
+        "order": card["order"],
+        "column_id": card["column_id"]
+    }
+    cursor.execute(command, param)
+
+@connection_handler
+def edit_card(cursor: RealDictCursor, card_id, description):
+    command = """
+                    UPDATE cards
+                    SET
+                        description = %(description)s
+                    WHERE id = %(id)s
+                """
+    param = {
+        "id": card_id,
+        "description": description
+    }
+    cursor.execute(command, param)
+
+@connection_handler
+def archive_card(cursor: RealDictCursor, card_id):
+    command = """
+                    UPDATE cards
+                    SET
+                        archived = True
+                    WHERE id = %(id)s
+                """
+    param = {
+        "id": card_id
+    }
+    cursor.execute(command, param)

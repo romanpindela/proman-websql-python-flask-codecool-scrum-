@@ -146,16 +146,79 @@ def delete_board():
 def edit_board():
     content = request.json
 
-    # TODO: Get user name from session
-    content["user_id"] = "test"
+    content["user_id"] = session[SESSION_KEY]
     data_handler.edit_board(content)
 
     return ""
+"""
+    COLUMNS
+"""
 
 @app.route("/columns/<int:board_id>",  methods=['GET'])
 @json_response
 def get_columns(board_id: int):
     return data_handler.get_columns(board_id)
+
+@app.route("/columns/move", methods=["POST"])
+@json_response
+def move_columns():
+    content = request.json
+
+    board_id = content["board_id"]
+    new_index = content["new_index"]
+    old_index = content["old_index"]
+
+    columns = data_handler.get_columns(board_id)
+    elem = columns.pop(old_index)
+    columns.insert(new_index, elem)
+
+    for x in range(len(columns)):
+        columns[x]["order"] = x
+        data_handler.update_column_order(columns[x])
+    return ""
+
+@app.route("/columns/delete", methods=["POST"])
+@json_response
+def delete_column():
+    content = request.json
+
+    column_id = content["column_id"]
+
+    data_handler.delete_column(column_id)
+    return ""
+
+@app.route("/columns/create", methods=["POST"])
+@json_response
+def create_column():
+    content = request.json
+
+    board_id = content["board_id"]
+    name = content["name"]
+
+    data_handler.create_column(board_id, name)
+    return ""
+
+@app.route("/columns/edit", methods=["POST"])
+@json_response
+def edit_column():
+    content = request.json
+
+    column_id = content["column_id"]
+    name = content["name"]
+
+    data_handler.edit_column(column_id, name)
+    return ""
+
+@app.route("/cards/create", methods=["POST"])
+@json_response
+def create_card():
+    if session is None:
+        return ""
+
+    content = request.json
+    data_handler.create_card(content["board_id"], content["description"])
+    return ""
+
 
 @app.route("/cards/<int:board_id>")
 @json_response
@@ -164,7 +227,60 @@ def get_cards_for_board(board_id: int):
     All cards that belongs to a board
     :param board_id: id of the parent board
     """
-    return data_handler.get_cards_for_board(board_id)
+    cards = data_handler.get_cards_for_board(board_id)
+    return cards
+
+@app.route("/cards/move", methods=["POST"])
+@json_response
+def move_card():
+    content = request.json
+
+    card_id = content["card_id"]
+    card_order = content["card_order"]
+    column_id = content["column_id"]
+
+    cards = data_handler.get_column_cards(column_id)
+    card = data_handler.get_card(card_id)
+    card["column_id"] = column_id
+    #if card exists in this column get index
+    index = -1
+    for i in range(len(cards)):
+        if cards[i]["id"] == card_id:
+            index = i
+
+    #and remove
+    if index >= 0:
+        cards.pop(index)
+
+    cards.insert(card_order, card)
+
+    for x in range(len(cards)):
+        cards[x]["order"] = x
+        data_handler.update_cards_order(cards[x])
+    return ""
+
+@app.route("/cards/edit", methods=["POST"])
+@json_response
+def edit_card():
+    content = request.json
+
+    card_id = content["card_id"]
+    description = content["description"]
+
+    data_handler.edit_card(card_id, description)
+
+    return ""
+
+@app.route("/cards/archive", methods=["POST"])
+@json_response
+def archive_card():
+    content = request.json
+
+    card_id = content["card_id"]
+
+    data_handler.archive_card(card_id)
+
+    return ""
 
 @app.route("/getquote", methods=["GET"])
 def get_random_quote():
