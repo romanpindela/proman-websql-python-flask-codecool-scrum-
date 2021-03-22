@@ -84,6 +84,11 @@ export let dataHandler = {
     },
     getCardsByBoardId: function (boardId, callback) {
         // the cards are retrieved and then the callback function is called with the cards
+        this._api_get('/cards/'+boardId, (response) => {
+            this._data['board'] = response;
+            console.log(response)
+            callback(response);
+        });
     },
     getCard: function (cardId, callback) {
         // the card is retrieved and then the callback function is called with the card
@@ -105,8 +110,12 @@ export let dataHandler = {
         }
       this._api_post("/board/delete", data, callback)
     },
-    createNewCard: function (cardTitle, boardId, statusId, callback) {
-        // creates new card, saves it and calls the callback function with its data
+    createNewCard: function (cardTitle, boardId, callback) {
+        let data = {
+            board_id: boardId,
+            description: cardTitle
+        }
+       this._api_post("/cards/create", data, callback)
     },
     // here comes more features
     editBoard: function (id, title, callback) {
@@ -124,5 +133,61 @@ export let dataHandler = {
             callback(response);
         });
 
+    },
+    create_column: function (board_id, name, callback){
+        let data = {
+            board_id : board_id,
+            name: name
+        }
+
+        this._api_post("/columns/create", data, callback)
+    },
+    move_columns: function (board_id, old_column_index, new_column_index, callback){
+        let data = {
+            board_id : board_id,
+            new_index: new_column_index,
+            old_index: old_column_index
+        }
+
+        this._api_post("/columns/move", data, callback)
+    },
+    edit_column: function (column_id, name, callback){
+        let data = {
+            column_id : column_id,
+            name: name
+        }
+
+        this._api_post("/columns/edit", data, callback)
+    },
+     delete_column: function (column_id, callback){
+        let data = {
+            column_id : column_id
+        }
+
+        this._api_post("/columns/delete", data, callback)
+    },
+    move_card: function (card_id, target_column_id, card_order, callback) {
+         let data = {
+            card_id : card_id,
+            column_id: target_column_id,
+            card_order: card_order
+        }
+
+        this._api_post("/cards/move", data, callback)
+    },
+    editCard(id, description, callback) {
+         let data = {
+            card_id : id,
+            description: description
+        }
+
+        this._api_post("/cards/edit", data, callback)
+    },
+    archiveCard(id, callback) {
+         let data = {
+            card_id : id,
+        }
+
+        this._api_post("/cards/archive", data, callback)
     }
 };

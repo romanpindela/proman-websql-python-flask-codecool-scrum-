@@ -27,10 +27,6 @@ export let domBoards = {
         newBoardButton.setAttribute('data-toggle', 'modal');
         newBoardButton.setAttribute('data-target', '#createBoardModal');
 
-        //newBoardButton.addEventListener('click', ()=>{
-        //    //TODO: Show modal window "Create new board"
-        //})
-        //newBoardButton.className = "btn btn-primary"
         newBoardButton.innerText = "Create new board"
         boardsContainer.insertAdjacentElement('beforeend', newBoardButton)
 
@@ -46,7 +42,6 @@ export let domBoards = {
                 $("#createBoardModal").modal('hide');
                 this.loadBoards()
             })
-
         })
         boardsContainer.appendChild(modal);
 
@@ -97,7 +92,6 @@ export let domBoards = {
                 let id = event.target.getAttribute("boardId")
                 dataHandler.deleteBoard(id, ()=>
                 {
-                     $("#createBoardModal").modal('hide');
                     this.loadBoards()
                 })
             })
